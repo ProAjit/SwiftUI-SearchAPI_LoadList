@@ -22,8 +22,10 @@ final class ReposStore: ObservableObject {
         service.search(matching: query) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
-                case .success(let repos): self?.repos = repos
-                case .failure: self?.repos = []
+                case .success(let repos): 
+                    self?.repos = repos
+                case .failure: 
+                    self?.repos = []
                 }
             }
         }
