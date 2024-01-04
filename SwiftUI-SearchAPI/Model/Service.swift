@@ -7,6 +7,11 @@
 
 import Foundation
 
+
+struct APIEndpoints {
+    static let usersURLString = "https://api.github.com/search/repositories"
+}
+
 class GithubService {
     private let session: URLSession
     private let decoder: JSONDecoder
@@ -17,17 +22,18 @@ class GithubService {
     }
 
     func search(matching query: String, handler: @escaping (Result<[Repo], Error>) -> Void) {
-        guard
-            var urlComponents = URLComponents(string: "https://api.github.com/search/repositories")
-            else { preconditionFailure("Can't create url components...") }
+        
+        guard var urlComponents = URLComponents(string: APIEndpoints.usersURLString) else {
+            preconditionFailure("Can't create url components...")
+        }
 
         urlComponents.queryItems = [
             URLQueryItem(name: "q", value: query)
         ]
 
-        guard
-            let url = urlComponents.url
-            else { preconditionFailure("Can't create url from url components...") }
+        guard let url = urlComponents.url  else {
+            preconditionFailure("Can't create url from url components...")
+        }
 
         session.dataTask(with: url) { [weak self] data, _, error in
             if let error = error {
